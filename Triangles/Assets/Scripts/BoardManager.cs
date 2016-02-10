@@ -57,7 +57,7 @@ public class BoardManager : MonoBehaviour
             for (int y = -1; y < rows + 1; y++)
             {
 
-                GameObject mapObject = groundTile;
+                GameObject mapObject;
 
                 // Set the position for the tile/object
                 Vector3 tilePosition = new Vector3(x, 0, y);
@@ -67,10 +67,14 @@ public class BoardManager : MonoBehaviour
                     // This is a wall
                     mapObject = wallTile;
                 }
+                else {
+                    mapObject = groundTile;
+										mapObject.transform.localScale = Vector3.one * (1-outlinePercent);
+                }
 
                 GameObject instance = Instantiate(mapObject, tilePosition, Quaternion.Euler(Vector3.right * 90)) as GameObject;
 
-								instance.transform.SetParent (boardHolder);
+                instance.transform.SetParent(boardHolder);
 
             }
         }
