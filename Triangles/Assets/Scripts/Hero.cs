@@ -103,6 +103,17 @@ public class Hero : Mob
                 SoundManager.instance.RandomizeSfx(gainEnergySounds);
                 item.gameObject.SetActive(false);
                 break;
+            case "Reset":
+                energy = 100;
+                statusText.text = "-Energy Reset-" + " Energy: " + energy;
+                item.gameObject.SetActive(false);
+                break;
+            case "Drain":
+                int drain = energy / 2;
+                energy -= drain;
+                statusText.text = "-" + drain + " Energy: " + energy;
+                item.gameObject.SetActive(false);
+                break;
         }
     }
 
