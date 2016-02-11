@@ -8,6 +8,7 @@ public class Hero : Mob
 
     public int obstacleDamage = 1;
     public int pointsPerEnergy = 10;
+    public int pointsPerPower = 20;
     public float restartLevelDelay = 1f;
     public Text statusText;
 
@@ -18,12 +19,12 @@ public class Hero : Mob
     private int energy;
 
     Material skinMaterial;
-	  Color originalColour;
+    Color originalColour;
 
 
     protected override void Start()
     {
-        skinMaterial = GetComponent<Renderer> ().material;
+        skinMaterial = GetComponent<Renderer>().material;
         originalColour = skinMaterial.color;
         //Get the current food point total stored in GameManager.instance between levels.
         energy = GameManager.instance.energyPoints;
@@ -96,12 +97,12 @@ public class Hero : Mob
                 SoundManager.instance.RandomizeSfx(gainEnergySounds);
                 item.gameObject.SetActive(false);
                 break;
-                // case "Soda":
-                //     food += pointsPerSoda;
-                //     statusText.text = "+" + pointsPerSoda + " Food: " + food;
-                //     SoundManager.instance.RandomizeSfx(drinkSound1, drinkSound2);
-                //     item.gameObject.SetActive(false);
-                //     break;
+            case "Power":
+                energy += pointsPerPower;
+                statusText.text = "+" + pointsPerPower + " Energy: " + energy;
+                SoundManager.instance.RandomizeSfx(gainEnergySounds);
+                item.gameObject.SetActive(false);
+                break;
         }
     }
 

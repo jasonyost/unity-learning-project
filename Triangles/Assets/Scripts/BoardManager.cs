@@ -26,9 +26,9 @@ public class BoardManager : MonoBehaviour
     public GameObject exit;
     public GameObject groundTile;
     public GameObject obstacleTile;
-    public GameObject enemyTile;
     public GameObject wallTile;
-    public GameObject energyTile;
+    public GameObject[] enemyTiles;
+    public GameObject[] energyTiles;
 
     [Range(0, 1)]
     public float outlinePercent;
@@ -99,16 +99,26 @@ public class BoardManager : MonoBehaviour
         }
     }
 
+    void LayoutObjectAtRandom(GameObject[] tileArray, int minimum, int maximum){
+        int objectCount = Random.Range(minimum, maximum + 1);
+
+        for (int i = 0; i < objectCount; i++) {
+            Vector3 randomPosition = RandomPosition();
+            GameObject tileChoice = tileArray[Random.Range(0, tileArray.Length)];
+            Instantiate(tileChoice, randomPosition, Quaternion.identity);
+        }
+    }
+
     public void SetupScene(int level)
     {
         BuildBoard();
         InitGridList();
 
         LayoutObjectAtRandom(obstacleTile, obstacleCount.minimum, obstacleCount.maximum);
-        LayoutObjectAtRandom(energyTile, energyCount.minimum, energyCount.maximum);
+        LayoutObjectAtRandom(energyTiles, energyCount.minimum, energyCount.maximum);
 
         int enemyCount = (int)Mathf.Log(level, 2f);
-        LayoutObjectAtRandom(enemyTile, enemyCount, enemyCount);
+        LayoutObjectAtRandom(enemyTiles, enemyCount, enemyCount);
 
         Instantiate(exit, new Vector3(columns - 1, 0.01f, rows - 1), Quaternion.Euler(Vector3.right * 90));
     }
