@@ -17,6 +17,7 @@ public class Hero : Mob
     public AudioClip gameOverSound;				      //Audio clip to play when player dies.
 
     private int energy;
+    private bool hasShield = false;
 
     Material skinMaterial;
     Color originalColour;
@@ -114,6 +115,11 @@ public class Hero : Mob
                 statusText.text = "-" + drain + " Energy: " + energy;
                 item.gameObject.SetActive(false);
                 break;
+            case "Shield":
+                hasShield = true;
+                statusText.color = new Color32(36, 136, 206,255);
+                item.gameObject.SetActive(false);
+                break;
         }
     }
 
@@ -124,10 +130,17 @@ public class Hero : Mob
 
     public void TakeDamage(int damage)
     {
-        // animator.SetTrigger("heroHurt");
-        energy -= damage;
-        statusText.text = "-" + damage + " Energy: " + energy;
-        CheckGameOver();
+        if (hasShield)
+        {
+            statusText.color = Color.white;
+            hasShield = false;
+        }
+        else
+        {
+            energy -= damage;
+            statusText.text = "-" + damage + " Energy: " + energy;
+            CheckGameOver();
+        }
     }
 
     private void CheckGameOver()
