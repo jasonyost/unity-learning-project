@@ -69,7 +69,7 @@ public class BoardManager : MonoBehaviour
                 }
                 else {
                     mapObject = groundTile;
-										mapObject.transform.localScale = Vector3.one * (1-outlinePercent);
+                    mapObject.transform.localScale = Vector3.one * (1 - outlinePercent);
                 }
 
                 GameObject instance = Instantiate(mapObject, tilePosition, Quaternion.Euler(Vector3.right * 90)) as GameObject;
@@ -88,6 +88,29 @@ public class BoardManager : MonoBehaviour
         return randomPosition;
     }
 
+    void LayoutObstacleAtRandom(GameObject obstacleTile, int minimum, int maximum)
+    {
+
+        int objectCount = Random.Range(minimum, maximum + 1);
+
+        for (int i = 0; i < objectCount; i++)
+        {
+            Vector3 randomPosition = RandomPosition();
+            float colorPercent = randomPosition.z / (float)rows;
+
+            Instantiate(obstacleTile, randomPosition, Quaternion.identity);
+
+            Renderer obstacleRenderer = obstacleTile.GetComponent<Renderer>();
+            // Material obstacleMaterial = new Material(obstacleRenderer.sharedMaterial);
+
+            Color foregroundColor = new Color(Random.value, Random.value, Random.value, 1.0f);
+            Color backgroundColor = new Color(Random.value, Random.value, Random.value, 1.0f);
+            obstacleRenderer.sharedMaterial.color = Color.Lerp(foregroundColor, backgroundColor, colorPercent);
+
+            // obstacleRenderer.sharedMaterial = obstacleMaterial;
+        }
+    }
+
     void LayoutObjectAtRandom(GameObject tile, int min, int max)
     {
         int objectCount = Random.Range(min, max + 1);
@@ -99,10 +122,12 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    void LayoutObjectAtRandom(GameObject[] tileArray, int minimum, int maximum){
+    void LayoutObjectAtRandom(GameObject[] tileArray, int minimum, int maximum)
+    {
         int objectCount = Random.Range(minimum, maximum + 1);
 
-        for (int i = 0; i < objectCount; i++) {
+        for (int i = 0; i < objectCount; i++)
+        {
             Vector3 randomPosition = RandomPosition();
             GameObject tileChoice = tileArray[Random.Range(0, tileArray.Length)];
             Instantiate(tileChoice, randomPosition, Quaternion.identity);
@@ -114,7 +139,7 @@ public class BoardManager : MonoBehaviour
         BuildBoard();
         InitGridList();
 
-        LayoutObjectAtRandom(obstacleTile, obstacleCount.minimum, obstacleCount.maximum);
+        LayoutObstacleAtRandom(obstacleTile, obstacleCount.minimum, obstacleCount.maximum);
         LayoutObjectAtRandom(energyTiles, energyCount.minimum, energyCount.maximum);
 
         int enemyCount = (int)Mathf.Log(level, 2f);
