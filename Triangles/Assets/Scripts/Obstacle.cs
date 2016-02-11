@@ -6,6 +6,7 @@ public class Obstacle : MonoBehaviour {
     // Reference to the game Object
 
     public AudioClip[] breakSounds;
+    public ParticleSystem destructEffect;
     public int obstacleHealth = 3;
 
     Material skinMaterial;
@@ -28,7 +29,8 @@ public class Obstacle : MonoBehaviour {
 
         // disable the obstacle if the damage is greater than health
 				if(obstacleHealth <= 0){
-					Destroy(gameObject);
+            Destroy(Instantiate(destructEffect.gameObject, transform.position, Quaternion.Euler(Vector3.right * 180)) as GameObject, destructEffect.startLifetime);
+            Destroy(gameObject);
 				}
     }
 }
