@@ -5,6 +5,7 @@ public class SoundManager : MonoBehaviour
 {
 
     public AudioSource sfxSource;
+    public AudioSource walkSfxSource;
     public AudioSource musicSource;
 
     public static SoundManager instance = null;
@@ -39,6 +40,16 @@ public class SoundManager : MonoBehaviour
         sfxSource.pitch = randomPitch;
         sfxSource.clip = clips[randomIndex];
 				sfxSource.Play();
+    }
+
+    public void RandomizeWalkSfx(params AudioClip[] clips)
+		{
+      int randomIndex = Random.Range(0, clips.Length);
+
+      float randomPitch = Random.Range(lowPitchRange, highPitchRange);
+      walkSfxSource.pitch = randomPitch;
+      walkSfxSource.clip = clips[randomIndex];
+      walkSfxSource.Play(); 
     }
 
 }

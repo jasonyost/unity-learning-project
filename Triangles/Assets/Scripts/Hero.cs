@@ -11,26 +11,23 @@ public class Hero : Mob
     public float restartLevelDelay = 1f;
     public Text statusText;
 
-    // TODO clean this up
-    // public AudioClip moveSound1;                //1 of 2 Audio clips to play when player moves.
-    // public AudioClip moveSound2;                //2 of 2 Audio clips to play when player moves.
-    // public AudioClip eatSound1;                 //1 of 2 Audio clips to play when player collects a food object.
-    // public AudioClip eatSound2;                 //2 of 2 Audio clips to play when player collects a food object.
-    // public AudioClip drinkSound1;               //1 of 2 Audio clips to play when player collects a soda object.
-    // public AudioClip drinkSound2;               //2 of 2 Audio clips to play when player collects a soda object.
-    // public AudioClip gameOverSound;				      //Audio clip to play when player dies.
+    public AudioClip[] moveSounds;
+    public AudioClip[] gainEnergySounds;
+    public AudioClip gameOverSound;				      //Audio clip to play when player dies.
 
-    // private Animator animator;
     private int energy;
+
+    Material skinMaterial;
+	  Color originalColour;
 
 
     protected override void Start()
     {
-        // animator = GetComponent<Animator>();
-
+        skinMaterial = GetComponent<Renderer> ().material;
+        originalColour = skinMaterial.color;
         //Get the current food point total stored in GameManager.instance between levels.
         energy = GameManager.instance.energyPoints;
-        // statusText.text = "Energy: " + energy;
+        statusText.text = "Energy: " + energy;
         base.Start();
     }
 
@@ -39,7 +36,7 @@ public class Hero : Mob
         GameManager.instance.energyPoints = energy;
     }
 
-    void FixedUpdate()
+    void Update()
     {
         if (!GameManager.instance.playersTurn)
         {
@@ -66,13 +63,13 @@ public class Hero : Mob
     protected override void OnMove<T>(int xDir, int yDir)
     {
         energy--;
-        // statusText.text = "Energy: " + energy;
+        statusText.text = "Energy: " + energy;
         base.OnMove<T>(xDir, yDir);
         RaycastHit hit;
 
         if (Move(xDir, yDir, out hit))
         {
-            // SoundManager.instance.RandomizeSfx(moveSound1, moveSound2);
+            SoundManager.instance.RandomizeWalkSfx(moveSounds);
         }
         CheckGameOver();
         GameManager.instance.playersTurn = false;
@@ -82,7 +79,7 @@ public class Hero : Mob
     {
         Obstacle hitObstacle = component as Obstacle;
         hitObstacle.DamageObstacle(obstacleDamage);
-        // animator.SetTrigger("heroStrike");
+        StartCoroutine(Attack(hitObstacle));
     }
 
     private void OnTriggerEnter(Collider item)
@@ -95,8 +92,8 @@ public class Hero : Mob
                 break;
             case "Energy":
                 energy += pointsPerEnergy;
-                // statusText.text = "+" + pointsPerEnergy + " Food: " + energy;
-                // SoundManager.instance.RandomizeSfx(eatSound1, eatSound2);
+                statusText.text = "+" + pointsPerEnergy + " Energy: " + energy;
+                SoundManager.instance.RandomizeSfx(gainEnergySounds);
                 item.gameObject.SetActive(false);
                 break;
                 // case "Soda":
@@ -117,7 +114,7 @@ public class Hero : Mob
     {
         // animator.SetTrigger("heroHurt");
         energy -= damage;
-        // statusText.text = "-" + damage + " Energy: " + energy;
+        statusText.text = "-" + damage + " Energy: " + energy;
         CheckGameOver();
     }
 
@@ -127,9 +124,31 @@ public class Hero : Mob
         {
             energy = 100;
             enabled = false;
-            // SoundManager.instance.PlaySingle(gameOverSound);
             GameManager.instance.GameOver();
         }
 
+    }
+
+    IEnumerator Attack(Component hitObstacle)
+    {
+        Vector3 originalPosition = transform.position;
+        Vector3 attackPosition = hitObstacle.transform.position;
+
+        float attackSpeed = 3;
+        float percent = 0;
+
+        GameManager.instance.playersTurn = true;
+        skinMaterial.color = Color.red;
+        while (percent <= 1)
+        {
+
+            percent += Time.deltaTime * attackSpeed;
+            float interpolation = (-Mathf.Pow(percent, 2) + percent) * 4;
+            transform.position = Vector3.Lerp(originalPosition, attackPosition, interpolation);
+
+            yield return null;
+        }
+        skinMaterial.color = originalColour;
+        GameManager.instance.playersTurn = false;
     }
 }

@@ -14,15 +14,16 @@ public class GameManager : MonoBehaviour
     public int energyPoints = 100;
     [HideInInspector]
     public bool playersTurn = true;
+    public bool enemyTurn;
     public bool isGameOver = false;
+    public AudioClip gameOverSound;
 
     private Text levelTitle;
     private GameObject levelCard;
-    private GameObject resetButton;
+    // private GameObject resetButton;
 
     private int level = 1;
     private List<Enemy> enemies = new List<Enemy>();
-    private bool enemyTurn;
     private bool doingSetup;
 
     void Awake()
@@ -53,9 +54,10 @@ public class GameManager : MonoBehaviour
     [ContextMenu("Game Over")]
     public void GameOver()
     {
-        // SoundManager.instance.musicSource.Stop();
-        levelTitle.text = "After " + level + " days, you starved to death.";
-        resetButton.SetActive(true);
+        SoundManager.instance.musicSource.Stop();
+        SoundManager.instance.PlaySingle(gameOverSound);
+        levelTitle.text = "After " + level + " levels, you ran out of energy.";
+        // resetButton.SetActive(true);
         levelCard.SetActive(true);
         isGameOver = true;
     }
@@ -71,15 +73,16 @@ public class GameManager : MonoBehaviour
     {
         // doingSetup = true;
         isGameOver = false;
-        // levelCard = GameObject.Find("LevelCard");
-        // levelTitle = GameObject.Find("LevelTitle").GetComponent<Text>();
+        levelCard = GameObject.Find("LevelCard");
+        levelTitle = GameObject.Find("LevelTitle").GetComponent<Text>();
         // resetButton = GameObject.Find("ResetButton");
 
-        // levelTitle.text = "Day " + level;
-        // levelCard.SetActive(true);
+        levelCard.SetActive(true);
+        levelTitle.text = "Level " + level;
+
         // resetButton.SetActive(false);
 
-        // Invoke("HideLevelCard", levelStartDelay);
+        Invoke("HideLevelCard", levelStartDelay);
 
         enemies.Clear();
         boardManager.SetupScene(level);
@@ -87,6 +90,7 @@ public class GameManager : MonoBehaviour
 
     void HideLevelCard()
     {
+        levelTitle.text = "";
         levelCard.SetActive(false);
         doingSetup = false;
     }

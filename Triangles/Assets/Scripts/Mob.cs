@@ -31,8 +31,6 @@ public abstract class Mob : MonoBehaviour
         Physics.Linecast(start, end, out hit, blockingLayer);
         boxCollider.enabled = true;
 
-        print(hit.transform);
-
         if (hit.transform == null)
         {
             StartCoroutine(SmoothMovement(end));
@@ -40,12 +38,6 @@ public abstract class Mob : MonoBehaviour
         }
         // something is in the way, we did not move
         return false;
-    }
-
-    void OnCollisionEnter(Collision collisionInfo)
-    {
-        rBody.velocity = Vector3.zero;
-        rBody.angularVelocity = Vector3.zero;
     }
 
     protected IEnumerator SmoothMovement(Vector3 end)
