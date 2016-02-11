@@ -44,7 +44,7 @@ public class BoardManager : MonoBehaviour
         {
             for (int y = 1; y < rows - 1; y++)
             {
-                gridPositions.Add(new Vector3(x, 1f, y));
+                gridPositions.Add(new Vector3(x, 0.34f, y));
             }
         }
     }
@@ -104,11 +104,11 @@ public class BoardManager : MonoBehaviour
         BuildBoard();
         InitGridList();
 
-        // LayoutObjectAtRandom(obstacleTile, obstacleCount.minimum, obstacleCount.maximum);
-        // LayoutObjectAtRandom(energyTile, energyCount.minimum, energyCount.maximum);
+        LayoutObjectAtRandom(obstacleTile, obstacleCount.minimum, obstacleCount.maximum);
+        LayoutObjectAtRandom(energyTile, energyCount.minimum, energyCount.maximum);
 
         int enemyCount = (int)Mathf.Log(level, 2f);
-        // LayoutObjectAtRandom(enemyTile, enemyCount, enemyCount);
+        LayoutObjectAtRandom(enemyTile, enemyCount, enemyCount);
 
         Instantiate(exit, new Vector3(columns - 1, 0.01f, rows - 1), Quaternion.Euler(Vector3.right * 90));
     }
