@@ -29,7 +29,7 @@ public class Obstacle : MonoBehaviour {
 
         // disable the obstacle if the damage is greater than health
 				if(obstacleHealth <= 0){
-            Destroy(Instantiate(destructEffect.gameObject, transform.position, Quaternion.Euler(Vector3.right * 180)) as GameObject, destructEffect.startLifetime);
+            Destroy(Instantiate(destructEffect.gameObject, transform.position, Quaternion.Euler(Vector3.right * 90)) as GameObject, destructEffect.startLifetime);
             Destroy(gameObject);
 				}
     }
