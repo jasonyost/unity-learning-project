@@ -14,7 +14,9 @@ public class Hero : Mob
 
     public AudioClip[] moveSounds;
     public AudioClip[] gainEnergySounds;
-    public AudioClip gameOverSound;				      //Audio clip to play when player dies.
+    public AudioClip resetSound;
+    public AudioClip drainSound;
+    public AudioClip shieldSound;
 
     private int energy;
     private bool hasShield = false;
@@ -107,17 +109,21 @@ public class Hero : Mob
             case "Reset":
                 energy = 100;
                 statusText.text = "-Energy Reset-" + " Energy: " + energy;
+                SoundManager.instance.RandomizeSfx(resetSound);
                 item.gameObject.SetActive(false);
                 break;
             case "Drain":
                 int drain = energy / 2;
                 energy -= drain;
                 statusText.text = "-" + drain + " Energy: " + energy;
+                SoundManager.instance.RandomizeSfx(drainSound);
                 item.gameObject.SetActive(false);
                 break;
             case "Shield":
                 hasShield = true;
-                statusText.color = new Color32(36, 136, 206,255);
+                statusText.color = new Color32(36, 136, 206, 255);
+                statusText.text = "Shielded" + " Energy: " + energy;
+                SoundManager.instance.RandomizeSfx(shieldSound);
                 item.gameObject.SetActive(false);
                 break;
         }
