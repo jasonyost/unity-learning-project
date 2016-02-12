@@ -25,6 +25,7 @@ public class BoardManager : MonoBehaviour
     public Count energyCount = new Count(1, 5);
     public Count floorTileCount = new Count(1, 3);
     public GameObject exit;
+    public GameObject reset;
     public GameObject groundTile;
     public GameObject obstacleTile;
     public GameObject wallTile;
@@ -136,7 +137,7 @@ public class BoardManager : MonoBehaviour
         }
     }
 
-    void LayoutFloorTileAtRandom(GameObject[] tileArray, int minimum, int maximum)
+    void LayoutFloorTilesAtRandom(GameObject[] tileArray, int minimum, int maximum)
     {
       int objectCount = Random.Range(minimum, maximum + 1);
 
@@ -148,6 +149,17 @@ public class BoardManager : MonoBehaviour
       }
     }
 
+    void LayoutFloorTileAtRandom(GameObject tile, int minimum, int maximum)
+    {
+      int objectCount = Random.Range(minimum, maximum + 1);
+
+      for (int i = 0; i < objectCount; i++)
+      {
+          Vector3 randomPosition = RandomPosition();
+          Instantiate(tile, new Vector3(randomPosition.x, 0.01f, randomPosition.z), Quaternion.Euler(Vector3.right * 90));
+      }
+    }
+
     public void SetupScene(int level)
     {
         BuildBoard();
@@ -155,7 +167,14 @@ public class BoardManager : MonoBehaviour
 
         LayoutObstacleAtRandom(obstacleTile, obstacleCount.minimum, obstacleCount.maximum);
         LayoutObjectAtRandom(energyTiles, energyCount.minimum, energyCount.maximum);
-        LayoutFloorTileAtRandom(floorTiles, floorTileCount.minimum, floorTileCount.maximum);
+        LayoutFloorTilesAtRandom(floorTiles, floorTileCount.minimum, floorTileCount.maximum);
+
+        // 12.5% chance of a Power reset tile per level
+        int resetChance = Random.Range(0, 7);
+        if (resetChance == 0)
+        {
+          LayoutFloorTileAtRandom(reset, 1, 1);
+        }
 
         int enemyCount = (int)Mathf.Log(level, 2f);
         LayoutObjectAtRandom(enemyTiles, enemyCount, enemyCount);

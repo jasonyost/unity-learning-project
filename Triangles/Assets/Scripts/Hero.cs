@@ -126,6 +126,22 @@ public class Hero : Mob
                 SoundManager.instance.RandomizeSfx(shieldSound);
                 item.gameObject.SetActive(false);
                 break;
+            case "Chance":
+                int balance = energy / 2;
+                int chance = Random.Range(0, 3);
+                string op;
+                if (chance == 0)
+                {
+                    energy += balance;
+                    op = "+";
+                }
+                else{
+                    energy -= balance;
+                    op = "-";
+                }
+                statusText.text = op + balance + " Energy: " + energy;
+                item.gameObject.SetActive(false);
+                break;
         }
     }
 
