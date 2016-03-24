@@ -1,14 +1,16 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/Mob.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/BoardManager.cs">
     <Files>
-      <File FileName="Assets/Scripts/Hero.cs" Line="78" Column="50" />
-      <File FileName="Assets/Scripts/Mob.cs" Line="29" Column="37" />
+      <File FileName="Assets/Scripts/Hero.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/Mob.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/GameManager.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/BoardManager.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="/Users/jason/dev/triangles/Triangles/Assets/Scripts/Mob.cs" line="31" column="1" />
+      <Breakpoint file="/Users/jason/dev/triangles/Triangles/Assets/Scripts/BoardManager.cs" line="96" column="1" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

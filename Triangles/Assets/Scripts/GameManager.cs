@@ -7,19 +7,24 @@ using System.Collections.Generic;
 public class GameManager : MonoBehaviour
 {
 
+    // time between level load
     public float levelStartDelay = 2f;
+    // time between turn delay
     public float turnDelay = .1f;
-    public static GameManager instance = null;
-    public BoardManager boardManager;
+    public static GameManager instance = null; //Static instance of GameManager which allows it to be accessed by any other script.
+    public BoardManager boardManager; //Store a reference to our BoardManager which will set up the level.
+    // Starting energy, when depleted, game over
     public int energyPoints = 100;
-    [HideInInspector]
+    [HideInInspector] // hide this in the editor
     public bool playersTurn = true;
+    [HideInInspector] // hide this in the editor
     public bool enemyTurn;
     public bool isGameOver = false;
-    public AudioClip gameOverSound;
+    public AudioClip gameOverSound; // reference to the game over sound
 
     private Text levelTitle;
     private GameObject levelCard;
+    // TODO implment reset button
     // private GameObject resetButton;
 
     private int level = 1;
